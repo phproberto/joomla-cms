@@ -266,6 +266,11 @@ class PlgSystemDebug extends JPlugin
 			{
 				$html[] = $this->display('logs');
 			}
+
+			if ($this->params->get('layouts', 1))
+			{
+				$html[] = $this->display('layouts');
+			}
 		}
 
 		if ($this->debugLang)
@@ -1495,6 +1500,26 @@ class PlgSystemDebug extends JPlugin
 		$html[] = '</ul>';
 
 		return implode('', $html);
+	}
+
+	/**
+	 * Display layouts debug information
+	 *
+	 * @return  string
+	 *
+	 * @since   3.5
+	 */
+	protected function displayLayouts()
+	{
+		$renderer = $this->getRenderer()->setLayout('layouts');
+
+		$renderer->setData(
+			array(
+				'stats' => $renderer::getStats()
+			)
+		);
+
+		return $renderer->render();
 	}
 
 	/**

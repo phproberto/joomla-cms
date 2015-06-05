@@ -258,6 +258,44 @@ final class JApplicationSite extends JApplicationCms
 	}
 
 	/**
+	 * Get layout paths for the renderer
+	 *
+	 * @return  array
+	 *
+	 * @since   3.5
+	 */
+	protected function getLayoutPaths()
+	{
+		$defaultPaths = array();
+
+		$component = $this->input->getCmd('option', null);
+		$template = $this->getTemplate();
+
+		// (1) Component template overrides path
+		if ($component && $template)
+		{
+			$defaultPaths[] = JPATH_THEMES . '/' . $this->getTemplate() . '/html/layouts/' . $component;
+		}
+
+		// (2) Component path
+		if ($component)
+		{
+			$defaultPaths[] = JPATH_SITE . '/components/' . $component . '/layouts';
+		}
+
+		// (3) Standard Joomla! layouts overriden
+		if ($template)
+		{
+			$defaultPaths[] = JPATH_THEMES . '/' . $template . '/html/layouts';
+		}
+
+		// (4 - lower priority) Frontend base layouts
+		$defaultPaths[] = JPATH_ROOT . '/layouts';
+
+		return $defaultPaths;
+	}
+
+	/**
 	 * Return a reference to the JMenu object.
 	 *
 	 * @param   string  $name     The name of the application/client.
@@ -652,6 +690,22 @@ final class JApplicationSite extends JApplicationCms
 		 */
 		$this->getLanguage()->load('lib_joomla', JPATH_SITE, null, false, true)
 			|| $this->getLanguage()->load('lib_joomla', JPATH_ADMINISTRATOR, null, false, true);
+	}
+
+	/**
+	 * Loads the application renderer
+	 *
+	 * @return  JRendererInterface
+	 *
+	 * @since   3.5
+	 */
+	public function getRenderer($name = 'layout', $config = array())
+	{
+		$renderer = parent::getRenderer($name, $config);
+
+		$renderer->setSearchPaths($this->getLayoutPaths());
+
+		return $renderer;
 	}
 
 	/**

@@ -86,6 +86,13 @@ class JApplicationCms extends JApplicationWeb
 	protected $template = null;
 
 	/**
+	 * Application renderer
+	 *
+	 * @var  JRendererInterface
+	 */
+	protected $renderer;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param   JInput                 $input   An optional argument to provide dependency injection for the application's
@@ -495,6 +502,30 @@ class JApplicationCms extends JApplicationWeb
 		}
 
 		return $pathway;
+	}
+
+	/**
+	 * Get the application renderer
+	 *
+	 * @param   string  $name  Name of the renderer to load
+	 *
+	 * @return  JRendererInterface
+	 *
+	 * @since   3.5
+	 */
+	public function getRenderer($name = 'layout', $config = array())
+	{
+		// Get a translated error message if a renderer fails
+		try
+		{
+			$renderer = JRenderer::get($name, $config);
+		}
+		catch (Exception $e)
+		{
+			throw new RuntimeException(JText::sprintf('JLIB_APPLICATION_ERROR_RENDERER_NOT_FOUND', $name), 500);
+		}
+
+		return $renderer;
 	}
 
 	/**

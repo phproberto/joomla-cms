@@ -19,6 +19,10 @@ $canEdit = $params->get('access-edit');
 $user    = JFactory::getUser();
 $info    = $params->get('info_block_position', 0);
 JHtml::_('behavior.caption');
+
+// Example global layout renderer loading
+$renderer = JFactory::getApplication()->getRenderer();
+
 ?>
 <div class="item-page<?php echo $this->pageclass_sfx; ?>" itemscope itemtype="http://schema.org/Article">
 	<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? JFactory::getConfig()->get('language') : $this->item->language; ?>" />
@@ -63,7 +67,9 @@ JHtml::_('behavior.caption');
 	<?php endif; ?>
 	<?php if (!$this->print) : ?>
 		<?php if ($canEdit || $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
-			<?php echo JLayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item, 'print' => false)); ?>
+			<?php
+			// Sample JLayoutHelper::render replacement
+			echo JRendererHelper::render('joomla.content.icons', array('params' => $params, 'item' => $this->item, 'print' => false)); ?>
 		<?php endif; ?>
 	<?php else : ?>
 		<?php if ($useDefList) : ?>
@@ -74,7 +80,17 @@ JHtml::_('behavior.caption');
 	<?php endif; ?>
 
 	<?php if ($useDefList && ($info == 0 || $info == 2)) : ?>
-		<?php echo JLayoutHelper::render('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'above')); ?>
+		<?php
+			$renderer->setLayout('test.layout')
+				->loadVersionSuffixes()
+				->setPrefixes('boostrap3')
+				->set('var', 'value');
+
+			// Sample debug call. It shows the layout output and the layout information
+			echo $renderer->debug(array('article' => $this->item));
+    	?>
+		<?php echo JRendererHelper::debug('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'above')); ?>
+		<?php echo JRendererHelper::debug('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'above')); ?>
 	<?php endif; ?>
 
 	<?php if ($info == 0 && $params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
@@ -112,7 +128,7 @@ JHtml::_('behavior.caption');
 	</div>
 
 	<?php if ($useDefList && ($info == 1 || $info == 2)) : ?>
-		<?php echo JLayoutHelper::render('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
+		<?php echo JRendererHelper::debug('joomla.content.info_block.block', array('item' => $this->item, 'params' => $params, 'position' => 'below')); ?>
 		<?php if ($params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
 			<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
 			<?php echo $this->item->tagLayout->render($this->item->tags->itemTags); ?>

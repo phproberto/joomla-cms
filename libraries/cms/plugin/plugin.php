@@ -120,6 +120,40 @@ abstract class JPlugin extends JEvent
 	}
 
 	/**
+	 * Get the include paths where the plugin has to search for layouts
+	 *
+	 * @return  array
+	 *
+	 * @since   3.5
+	 */
+	protected function getLayoutPaths()
+	{
+		$template  = JFactory::getApplication()->getTemplate();
+
+		return array(
+			JPATH_THEMES . "/" . $template . '/html/layouts/plugins/' . $this->_type . '/' . $this->_name,
+			JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/layouts',
+			JPATH_SITE . '/layouts/plugins/' . $this->_type . '/' . $this->_name
+		);
+	}
+
+	/**
+	 * Get the plugin renderer
+	 *
+	 * @return  JLayout
+	 *
+	 * @since   3.5
+	 */
+	protected function getRenderer()
+	{
+		$renderer = JFactory::getApplication()->getRenderer();
+
+		$renderer->setSearchPaths($this->getLayoutPaths());
+
+		return $renderer;
+	}
+
+	/**
 	 * Loads the plugin language file
 	 *
 	 * @param   string  $extension  The extension for which a language file should be loaded

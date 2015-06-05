@@ -159,4 +159,18 @@ class JLayoutBase implements JLayout
 	{
 		$this->debugMessages[] = $message;
 	}
+
+	/**
+	 * Reset / Clean the debug messages list
+	 *
+	 * @return  JLayoutBase  Self instance for chaining
+	 *
+	 * @since   3.5
+	 */
+	protected function resetDebugMessages()
+	{
+		$this->debugMessages = array();
+
+		return $this;
+	}
 }
