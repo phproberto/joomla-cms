@@ -421,12 +421,12 @@ class AdminModelSysInfo extends JModelLegacy
 				{
 					$manifest = json_decode($extension->manifest_cache);
 					$installed[$extension->name] = array(
-						'name'         => $manifest->name,
-						'type'         => $manifest->type,
-						'author'       => $manifest->author,
-						'version'      => $manifest->version,
-						'creationDate' => $manifest->creationDate,
-						'authorUrl'    => $manifest->authorUrl
+						'name'         => &$manifest->name,
+						'type'         => &$manifest->type,
+						'author'       => &$manifest->author,
+						'version'      => &$manifest->version,
+						'creationDate' => &$manifest->creationDate,
+						'authorUrl'    => &$manifest->authorUrl
 					);
 				}
 			}
