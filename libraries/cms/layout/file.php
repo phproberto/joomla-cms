@@ -751,6 +751,9 @@ class JLayoutFile extends JLayoutBase
 					case 'none':
 						$this->options->set('suffixes', array());
 						break;
+					case 'autodevice':
+						// Call to a beefed up https://github.com/serbanghita/Mobile-Detect
+						// or jBrowser and deliver a posible suffix: desktop, mobile, tablet
 					default:
 						$this->options->set('suffixes', array($suffixes));
 						break;
