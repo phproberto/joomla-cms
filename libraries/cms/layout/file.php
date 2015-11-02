@@ -21,8 +21,8 @@ class JLayoutFile extends JLayoutBase
 	/**
 	 * Cached layout paths
 	 *
-	 * @var  array
-	 * @since  3.0
+	 * @var    array
+	 * @since  3.5
 	 */
 	protected static $cache = array();
 
